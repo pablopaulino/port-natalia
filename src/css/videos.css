@@ -1,0 +1,18 @@
+.videos {
+    border: none;
+    margin-top: 25px;
+    display: flex; /* Alinha os vídeos horizontalmente */
+    gap: 20px; /* Espaçamento entre os vídeos */
+    justify-content: center; /* Centraliza os vídeos */
+    flex-wrap: wrap; /* Faz os vídeos quebrarem para a próxima linha em telas menores */
+}
+
+.videos iframe {
+    border-radius: 15px; /* Bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona uma leve sombra para efeito visual */
+    transition: transform 0.3s; /* Animação suave ao passar o mouse */
+}
+
+.videos iframe:hover {
+    transform: scale(1.05); /* Aumenta levemente o vídeo ao passar o mouse */
+}
