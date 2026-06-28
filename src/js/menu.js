@@ -1,73 +1,37 @@
-const btnMenu = document.getElementById('btn-menu');
-const menu = document.getElementById('menu-mobile');
-const overlay = document.getElementById('overlay-menu');
+const menuButton=document.querySelector("#btn-menu");
+const menu=document.querySelector("#menu-mobile");
+const menuClose=document.querySelector(".menu-close");
+const overlay=document.querySelector("#overlay-menu");
+const mobileLinks=document.querySelectorAll("#menu-mobile a");
+const contactForm=document.querySelector("#contact-form");
 
-const toggleMenu = () => {
-    menu.classList.toggle('abrir-menu');
-};
+function setMenu(open){
+  menu.classList.toggle("open",open);
+  overlay.classList.toggle("open",open);
+  document.body.classList.toggle("menu-open",open);
+  menu.setAttribute("aria-hidden",String(!open));
+  menuButton.setAttribute("aria-expanded",String(open));
+  menuButton.setAttribute("aria-label",open?"Fechar menu":"Abrir menu");
+}
 
-btnMenu.addEventListener("click", toggleMenu);
-menu.addEventListener("click", toggleMenu);
-overlay.addEventListener("click", toggleMenu);
+menuButton.addEventListener("click",()=>setMenu(true));
+menuClose.addEventListener("click",()=>setMenu(false));
+overlay.addEventListener("click",()=>setMenu(false));
+mobileLinks.forEach(link=>link.addEventListener("click",()=>setMenu(false)));
+document.addEventListener("keydown",event=>{if(event.key==="Escape")setMenu(false)});
 
-document.querySelectorAll('nav a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
+contactForm.addEventListener("submit",event=>{
+  event.preventDefault();
+  const data=new FormData(contactForm);
+  const text=[
+    "Oi, Natália! Vim pelo site e gostaria de conversar sobre uma cobertura.",
+    "",
+    `Meu nome: ${data.get("nome")}`,
+    `Evento: ${data.get("evento")}`,
+    `Cidade e data: ${data.get("data")||"A definir"}`,
+    `Detalhes: ${data.get("mensagem")}`
+  ].join("\n");
+  window.open(`https://wa.me/5517997639292?text=${encodeURIComponent(text)}`,"_blank","noopener");
 });
 
-
-
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-
-var players = [];
-
-
-function onYouTubeIframeAPIReady() {
-    players.push(new YT.Player('player1', {
-        height: '583',
-        width: '328',
-        videoId: 'C8Uih_7FfOg',
-        events: {
-            'onStateChange': onPlayerStateChange
-        }
-    }));
-
-    players.push(new YT.Player('player2', {
-        height: '583',
-        width: '328',
-        videoId: 'evDPDx56g4c',
-        events: {
-            'onStateChange': onPlayerStateChange
-        }
-    }));
-
-    players.push(new YT.Player('player3', {
-        height: '583',
-        width: '328',
-        videoId: 'SOr-UlxioJc',
-        events: {
-            'onStateChange': onPlayerStateChange
-        }
-    }));
-}
-
-
-function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PLAYING) {
-        players.forEach(function(player) {
-            if (player != event.target) {
-                player.pauseVideo();
-            }
-        });
-    }
-}
-
+document.querySelector("#year").textContent=new Date().getFullYear();
